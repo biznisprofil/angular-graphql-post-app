@@ -12,11 +12,15 @@ import { EffectsModule } from '@ngrx/effects';
 import { postsReducer } from './store/reducers/posts.reducer';
 import { PostsEffects } from './store/effects/posts.effects';
 import { FormsModule } from '@angular/forms';
+import { AddPostComponent } from './posts/add-post/add-post.component';
+import { UpdatePostComponent } from './posts/update-post/update-post.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PostsComponent
+    PostsComponent,
+    AddPostComponent,
+    UpdatePostComponent
   ],
   imports: [
     BrowserModule,

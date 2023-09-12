@@ -7,7 +7,8 @@ export const PostsActions = createActionGroup({
     events: {
         'Load all Posts': emptyProps(),
         'Add Post': props<{ post: Partial<Post> }>(),
-        'Update Post': props<{ post: Post }>(),
+        'View Post': props<{ post: Post }>(),
+        'Update Post': props<{ post: Partial<Post>, id: string }>(),
         'Delete Post': props<{ postId: string }>(),
     }
 })
@@ -16,8 +17,9 @@ export const PostsApiActions = createActionGroup({
     source: 'Posts API',
     events: {
         'Posts Loaded Success': props<{ posts: Post[] }>(),
-        'Posts Added Success': props<{ post: Post }>(),
-        'Posts Deleted Success': props<{ post: Post }>(),
-        'Posts Operation Failed': props<{ error: Error }>()
+        'Post Added Success': props<{ post: Post }>(),
+        'Post Updated Success': props<{ post: Post }>(),
+        'Post Deleted Success': props<{ post: Post }>(),
+        'Post Operation Failed': props<{ error: Error }>()
     }
 })

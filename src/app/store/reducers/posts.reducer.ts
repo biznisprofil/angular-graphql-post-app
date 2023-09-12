@@ -1,11 +1,14 @@
 import { createReducer, on } from "@ngrx/store";
 import { PostsActions, PostsApiActions } from "../actions/posts.actions";
 
-import { PostsState } from "src/app/posts/posts.model";
+import { Post, PostsState } from "src/app/posts/posts.model";
 
 export const initialState: PostsState = {
     loading: false,
-    posts: []
+    posts: [],
+    post: {},
+    viewPost: {} as Post,
+    updatedPost: {} as Post
 }
 
 export const postsReducer = createReducer(
@@ -15,5 +18,21 @@ export const postsReducer = createReducer(
     }),
     on(PostsApiActions.postsLoadedSuccess, (state, { posts }) => {
         return { ...state, posts, loading: false }
-    })
+    }),
+    on(PostsActions.addPost, (state, { post }) => {
+        console.log(post)
+        return { ...state, post }
+    }),
+    on(PostsApiActions.postAddedSuccess, (state, { post }) => {
+        console.log(post)
+        return { ...state, post }
+    }),
+    on(PostsActions.viewPost, (state, { post }) => {
+        console.log(post)
+        return { ...state, viewPost: post }
+    }),
+    on(PostsApiActions.postUpdatedSuccess, (state, { post }) => {
+        console.log(post)
+        return { ...state, updatedPost: post }
+    }),
 )

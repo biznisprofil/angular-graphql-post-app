@@ -2,6 +2,10 @@
 <div class="bg-gray-100 p-4">
     <div class="max-w-3xl mx-auto">
       <div class="text-2xl font-bold text-gray-800 mb-4 flex justify-center">Posts</div>
+      <div class="flex justify-end">
+        <button class="px-4 py-2 bg-blue-500 text-white rounded-md" routerLink="/add-post">+</button>
+      </div>
+        
       <div class="text-center mb-4">
         <input
           type="text"
@@ -15,9 +19,11 @@
       <div class="posts-container">
         <ul>
           <li *ngFor="let post of displayedPosts" class="mb-4">
-            <div class="bg-white rounded-lg shadow-md p-4">
-              <span class="block text-xl font-semibold text-gray-800">{{ post.title }}</span>
-            </div>
+            <a (click)="postPreview(post)" routerLink="/update-post">
+                <div class="bg-white rounded-lg shadow-md p-4">
+                <span class="block text-xl font-semibold text-gray-800">{{ post.title }}</span>
+                </div>
+            </a>
           </li>
         </ul>
       </div>

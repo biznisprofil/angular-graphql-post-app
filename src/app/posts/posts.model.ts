@@ -13,5 +13,8 @@ export interface Post {
 
 export interface PostsState {
     loading: boolean,
-    posts: Post[]
+    posts: Post[],
+    post: Partial<Post>,
+    viewPost: Post,
+    updatedPost: Post
 }

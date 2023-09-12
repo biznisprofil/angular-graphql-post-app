@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 
-import { EMPTY } from "rxjs";
+import { EMPTY, of } from "rxjs";
 import { map, exhaustMap, catchError } from "rxjs/operators";
 import { PostsService } from "src/app/services/posts.service";
 
@@ -19,6 +19,22 @@ export class PostsEffects {
         exhaustMap(() => this.postsService.getAllPosts().pipe(
             map(posts => ({ type: '[Posts API] Posts Loaded Success', posts })),
             catchError(() => EMPTY)
+        ))
+    ))
+
+    $addPost = createEffect(() => this.actions$.pipe(
+        ofType('[Posts] Add Post'),
+        exhaustMap(({ post }) => this.postsService.addPost(post).pipe(
+            map(post => ({ type: '[Posts API] Post Added Success', post })),
+            catchError((error) => of({ type: '[Posts API] Post Operation Failed', error }))
+        ))
+    ))
+
+    $updatePost = createEffect(() => this.actions$.pipe(
+        ofType('[Posts] Update Post'),
+        exhaustMap(({ post, id }) => this.postsService.updatePost(post, id).pipe(
+            map(post => ({ type: '[Posts API] Post Updated Success', post })),
+            catchError((error) => of({ type: '[Posts API] Post Operation Failed', error }))
         ))
     ))
 }
