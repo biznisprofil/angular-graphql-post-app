@@ -37,4 +37,12 @@ export class PostsEffects {
             catchError((error) => of({ type: '[Posts API] Post Operation Failed', error }))
         ))
     ))
+
+    $deletePost = createEffect(() => this.actions$.pipe(
+        ofType('[Posts] Delete Post'),
+        exhaustMap(({ id }) => this.postsService.deletePost(id).pipe(
+            map(result => ({ type: '[Posts API] Post Deleted Success', id })),
+            catchError((error) => of({ type: '[Posts API] Post Operation Failed', error }))
+        ))
+    ))
 }

@@ -27,3 +27,8 @@ export const selectUpdatedPostValue = createSelector(
     selectPostsFeature,
     (state) => state.updatedPost
 )
+
+export const selectDeletedPostId = createSelector(
+    selectPostsFeature,
+    (state) => state.deletedPostId
+)

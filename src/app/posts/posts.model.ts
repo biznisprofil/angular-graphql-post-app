@@ -16,5 +16,6 @@ export interface PostsState {
     posts: Post[],
     post: Partial<Post>,
     viewPost: Post,
-    updatedPost: Post
+    updatedPost: Post,
+    deletedPostId: string
 }

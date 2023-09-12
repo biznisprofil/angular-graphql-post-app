@@ -16,6 +16,7 @@
         </div>
     </div>
     <div class="flex justify-end">
+        <button class="px-4 py-2 bg-red-500 text-white rounded-md" (click)="deletePost()" routerLink="/posts">Update</button>
         <button [disabled]="!titleValue" class="px-4 py-2 bg-blue-500 text-white rounded-md" (click)="updatePost()" routerLink="/posts">Update</button>
     </div>
 </div>

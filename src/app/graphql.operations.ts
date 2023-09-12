@@ -41,4 +41,12 @@ const UPDATE_POSTS = gql`
     }
 `
 
-export { GET_POSTS, ADD_POSTS, UPDATE_POSTS }
+const DELETE_POSTS = gql`
+    mutation (
+        $id: ID!
+    ) {
+        deletePost(id: $id)
+    }
+`
+
+export { GET_POSTS, ADD_POSTS, UPDATE_POSTS, DELETE_POSTS }

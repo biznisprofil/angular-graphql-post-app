@@ -21,7 +21,6 @@ export class UpdatePostComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.select(selectViewPosts).subscribe(data => {
-      console.log(data)
       this.viewPost = data
       this.titleValue = data.title
       this.bodyValue = data.body
@@ -30,18 +29,18 @@ export class UpdatePostComponent implements OnInit {
 
   updatePost() {
     const cleanValue = this.titleValue.trim()
-    
     if (cleanValue.length === 0) {
       return
     }
-
     const post = {
       title: this.titleValue,
       body: this.bodyValue
     }
-
     this.store.dispatch(PostsActions.updatePost({ post, id : this.viewPost.id }))
+  }
 
+  deletePost() {
+    this.store.dispatch(PostsActions.deletePost({ id : this.viewPost.id }))
   }
 
 }

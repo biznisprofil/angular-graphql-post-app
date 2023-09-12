@@ -17,18 +17,14 @@ export class AddPostComponent {
 
   addNewPost() {
     const cleanValue = this.titleValue.trim()
-    
     if (cleanValue.length === 0) {
       return
     }
-
     const post = {
       title: this.titleValue,
       body: this.bodyValue
     }
-
     this.store.dispatch(PostsActions.addPost({ post }))
-
   }
 
 }

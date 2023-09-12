@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { PostsActions } from '../store/actions/posts.actions';
-import { selectNewPostValue, selectPosts, selectUpdatedPostValue } from '../store/selectors/posts.selector';
+import { selectDeletedPostId, selectNewPostValue, selectPosts, selectUpdatedPostValue } from '../store/selectors/posts.selector';
 import { Post } from './posts.model';
 
 @Component({
@@ -40,21 +40,15 @@ export class PostsComponent implements OnInit {
     })
 
     this.store.select(selectUpdatedPostValue).subscribe((data) => {
-      console.log(data)
       if (data?.title) {
         this.update(data)
       }
     })
+
+    this.store.select(selectDeletedPostId).subscribe((postId) => {
+      this.delete(postId)
+    })
     
-  }
-
-  addNew(post: Partial<Post>) {
-    this.displayedPosts.unshift(post as Post)
-  }
-
-  update(post: Post) {
-    const index = this.displayedPosts.findIndex(x => x.id == post.id);
-    this.displayedPosts[index] = post;
   }
 
   postPreview(post: Post) {
@@ -103,6 +97,23 @@ export class PostsComponent implements OnInit {
     if (this.currentPage < totalPages) {
       this.currentPage++
       this.calculateDisplayedPosts(this.pageSize)
+    }
+  }
+
+  // this methods serves only to simulate updated data on the server
+  addNew(post: Partial<Post>) {
+    this.displayedPosts.unshift(post as Post)
+  }
+
+  update(post: Post) {
+    const index = this.displayedPosts.findIndex(x => x.id === post.id)
+    this.displayedPosts[index] = post;
+  }
+
+  delete(id: string) {
+    const index = this.displayedPosts.findIndex(x => x.id === id)
+    if (index > -1) { 
+      this.displayedPosts.splice(index, 1)
     }
   }
 

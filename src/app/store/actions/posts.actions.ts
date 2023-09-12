@@ -9,7 +9,7 @@ export const PostsActions = createActionGroup({
         'Add Post': props<{ post: Partial<Post> }>(),
         'View Post': props<{ post: Post }>(),
         'Update Post': props<{ post: Partial<Post>, id: string }>(),
-        'Delete Post': props<{ postId: string }>(),
+        'Delete Post': props<{ id: string }>(),
     }
 })
 
@@ -19,7 +19,7 @@ export const PostsApiActions = createActionGroup({
         'Posts Loaded Success': props<{ posts: Post[] }>(),
         'Post Added Success': props<{ post: Post }>(),
         'Post Updated Success': props<{ post: Post }>(),
-        'Post Deleted Success': props<{ post: Post }>(),
+        'Post Deleted Success': props<{ id: string }>(),
         'Post Operation Failed': props<{ error: Error }>()
     }
 })

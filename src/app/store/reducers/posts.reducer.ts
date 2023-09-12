@@ -8,7 +8,8 @@ export const initialState: PostsState = {
     posts: [],
     post: {},
     viewPost: {} as Post,
-    updatedPost: {} as Post
+    updatedPost: {} as Post,
+    deletedPostId: ''
 }
 
 export const postsReducer = createReducer(
@@ -20,19 +21,18 @@ export const postsReducer = createReducer(
         return { ...state, posts, loading: false }
     }),
     on(PostsActions.addPost, (state, { post }) => {
-        console.log(post)
         return { ...state, post }
     }),
     on(PostsApiActions.postAddedSuccess, (state, { post }) => {
-        console.log(post)
         return { ...state, post }
     }),
     on(PostsActions.viewPost, (state, { post }) => {
-        console.log(post)
         return { ...state, viewPost: post }
     }),
     on(PostsApiActions.postUpdatedSuccess, (state, { post }) => {
-        console.log(post)
         return { ...state, updatedPost: post }
+    }),
+    on(PostsApiActions.postDeletedSuccess, (state, { id }) => {
+        return { ...state, deletedPostId: id }
     }),
 )

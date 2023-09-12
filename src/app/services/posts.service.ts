@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map } from 'rxjs';
-import { ADD_POSTS, GET_POSTS, UPDATE_POSTS } from '../graphql.operations';
+import { ADD_POSTS, DELETE_POSTS, GET_POSTS, UPDATE_POSTS } from '../graphql.operations';
 import { Post } from '../posts/posts.model';
 
 @Injectable({
@@ -38,6 +38,16 @@ export class PostsService {
           input: post
         }
     }).pipe(map((result: any) => result.data.updatePost))
+  }
+
+  public deletePost(id: string) {
+    return this.apollo
+      .mutate({
+        mutation: DELETE_POSTS,
+        variables: {
+          id: id
+        }
+    }).pipe(map((result: any) => result))
   }
 
 }
