@@ -8,6 +8,7 @@ const GET_POSTS = gql`
             data {
                 id
                 title
+                body
             }
             meta {
                 totalCount

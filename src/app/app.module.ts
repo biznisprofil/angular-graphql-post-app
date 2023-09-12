@@ -11,6 +11,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { postsReducer } from './store/reducers/posts.reducer';
 import { PostsEffects } from './store/effects/posts.effects';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { PostsEffects } from './store/effects/posts.effects';
     BrowserModule,
     AppRoutingModule,
     GraphQLModule,
+    FormsModule,
     HttpClientModule,
     StoreModule.forRoot({
       posts: postsReducer

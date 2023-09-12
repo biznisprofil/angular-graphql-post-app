@@ -1,11 +1,39 @@
-<p>List Posts</p>
 
-<div class="posts-container" *ngIf="posts">
-    <ul>
-        <li *ngFor="let post of posts">
-            <div class="post">
-                <span class="post-title">{{ post.title }}</span>
+<div class="bg-gray-100 p-4">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-2xl font-bold text-gray-800 mb-4 flex justify-center">Posts</div>
+      <div class="text-center mb-4">
+        <input
+          type="text"
+          class="px-4 py-2 border rounded-md"
+          placeholder="Search posts"
+          [(ngModel)]="searchTerm"
+          (input)="searchPosts()"
+        />
+      </div>
+
+      <div class="posts-container">
+        <ul>
+          <li *ngFor="let post of displayedPosts" class="mb-4">
+            <div class="bg-white rounded-lg shadow-md p-4">
+              <span class="block text-xl font-semibold text-gray-800">{{ post.title }}</span>
             </div>
-        </li>
-    </ul>
-</div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="mt-4 flex justify-center" *ngIf="pageNumbers.length > 1">
+        <button class="px-4 py-2 bg-blue-500 text-white rounded-md mr-2" (click)="previousPage()" [disabled]="currentPage === 1"> <= </button>
+        <ng-container *ngFor="let pageNumber of pageNumbers">
+              <button
+                class="px-4 py-2 bg-blue-500 text-white rounded-md mr-2"
+                (click)="goToPage(pageNumber)"
+                [disabled]="pageNumber === currentPage"
+              >
+                {{ pageNumber }}
+              </button>
+        </ng-container>  
+        <button class="px-4 py-2 bg-blue-500 text-white rounded-md" (click)="nextPage()" [disabled]="currentPage * pageSize >= posts.length"> => </button>
+      </div>
+    </div>
+  </div>

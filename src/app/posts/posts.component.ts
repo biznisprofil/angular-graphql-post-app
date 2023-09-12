@@ -11,7 +11,14 @@ import { Post } from './posts.model';
 })
 export class PostsComponent implements OnInit {
 
+  currentPage: number = 1;
+  pageSize: number = 10;
+  totalItems: number = 100;
+  searchTerm: string = '';
+
   posts: Post[] = [];
+  displayedPosts: Post[] = [];
+  pageNumbers: number[] = [];
   error: any;
 
   constructor(
@@ -23,6 +30,54 @@ export class PostsComponent implements OnInit {
 
     this.store.select(selectPosts).subscribe((data: Post[]) => {
       this.posts = data
+      this.calculateDisplayedPosts(this.pageSize);
     })
+    
   }
+
+  searchPosts() {
+    this.currentPage = 1;
+    // when we search remove the pagintaion and show all posts that match searchTerm
+    const pageSize = this.searchTerm ? this.totalItems : this.pageSize
+    this.calculateDisplayedPosts(pageSize);
+  }
+
+  calculateDisplayedPosts(pageSize: number) {
+    const filteredPosts = this.posts.filter((post) =>
+      post.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+    const totalPages = Math.ceil(filteredPosts.length / pageSize);
+    this.pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+    const startIndex = (this.currentPage - 1) * pageSize;
+    this.displayedPosts = filteredPosts.slice(startIndex, startIndex + pageSize);
+    // for simplicity pagination is performed on the client 
+    // in real world application it should be implemented on BE
+    this.generatePageNumbers(pageSize);
+  }
+
+  generatePageNumbers(pageSize: number) {
+    const totalPages = Math.ceil(this.posts.length / pageSize);
+    this.pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  goToPage(pageNumber: number) {
+    this.currentPage = pageNumber;
+    this.calculateDisplayedPosts(this.pageSize);
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.calculateDisplayedPosts(this.pageSize);
+    }
+  }
+
+  nextPage() {
+    const totalPages = Math.ceil(this.totalItems / this.pageSize);
+    if (this.currentPage < totalPages) {
+      this.currentPage++;
+      this.calculateDisplayedPosts(this.pageSize);
+    }
+  }
+
 }
