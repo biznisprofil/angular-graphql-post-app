@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { PostsActions } from '../store/actions/posts.actions';
 import { selectDeletedPostId, selectNewPostValue, selectPosts, selectUpdatedPostValue } from '../store/selectors/posts.selector';
 import { Post } from './posts.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-posts',
   templateUrl: './posts.component.html',
   styleUrls: ['./posts.component.scss']
 })
-export class PostsComponent implements OnInit {
+export class PostsComponent implements OnInit, OnDestroy {
 
   currentPage: number = 1
   pageSize: number = 10
@@ -19,36 +20,16 @@ export class PostsComponent implements OnInit {
   posts: Post[] = []
   displayedPosts: Post[] = []
   pageNumbers: number[] = []
-  error: any
+
+  subscription = new Subscription()
 
   constructor(
     private store: Store,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.store.dispatch(PostsActions.loadAllPosts())
-
-    this.store.select(selectPosts).subscribe((data: Post[]) => {
-      this.posts = data
-      this.calculateDisplayedPosts(this.pageSize)
-    })
-
-    this.store.select(selectNewPostValue).subscribe((data) => {
-      if (data?.title) {
-        this.addNew(data)
-      }
-    })
-
-    this.store.select(selectUpdatedPostValue).subscribe((data) => {
-      if (data?.title) {
-        this.update(data)
-      }
-    })
-
-    this.store.select(selectDeletedPostId).subscribe((postId) => {
-      this.delete(postId)
-    })
-    
+    this.manageSubscriptions()
   }
 
   postPreview(post: Post) {
@@ -115,6 +96,38 @@ export class PostsComponent implements OnInit {
     if (index > -1) { 
       this.displayedPosts.splice(index, 1)
     }
+  }
+
+  manageSubscriptions() {
+    this.subscription.add(
+      this.store.select(selectPosts).subscribe((data: Post[]) => {
+        this.posts = data
+        this.calculateDisplayedPosts(this.pageSize)
+      })
+    )
+    this.subscription.add(
+      this.store.select(selectNewPostValue).subscribe((data) => {
+        if (data?.title) {
+          this.addNew(data)
+        }
+      })
+    )
+    this.subscription.add(
+      this.store.select(selectUpdatedPostValue).subscribe((data) => {
+        if (data?.title) {
+          this.update(data)
+        }
+      })
+    )
+    this.subscription.add(
+      this.store.select(selectDeletedPostId).subscribe((postId) => {
+        this.delete(postId)
+      })
+    )
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
   }
 
 }
